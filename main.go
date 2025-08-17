@@ -4,10 +4,12 @@ import (
 	"archive/zip"
 	"fmt"
 	"io"
+	"log"
 	"os"
 )
 
 func main() {
+	ReadContents("archive.zip")
 }
 
 func CreateZipAndFilesInside() {
@@ -40,4 +42,16 @@ func CreateZipAndFilesInside() {
 	}
 
 	defer zipWriter.Close()
+}
+
+func ReadContents(zipName string) {
+	zipList, err := zip.OpenReader(zipName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer zipList.Close()
+
+	for _, file := range zipList.File {
+		fmt.Println(file.Name)
+	}
 }
